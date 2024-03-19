@@ -79,73 +79,42 @@
     <th>Average Mark</th>
   </tr>
   <?php
-  //search id or name
+  	//search id or name
+	$searchId = $_GET['Id'] ?? null;
+	$searchName = $_GET['Name'] ?? null;
+	$searchItemsId = $searchId ? explode(",", $searchId) : []; // Tách chuỗi search thành mảng
+	$searchItemsName = $searchName ? explode(",", $searchName) : []; // Tách chuỗi search thành mảng
 
-  //search id or name
-$searchId = $_GET['Id'] ?? null;
-$searchName = $_GET['Name'] ?? null;
-$searchItemsId = $searchId ? explode(",", $searchId) : []; // Tách chuỗi search thành mảng
-$searchItemsName = $searchName ? explode(",", $searchName) : []; // Tách chuỗi search thành mảng
+	$searchItems = array_merge($searchItemsId, $searchItemsName);
 
-$searchItems = array_merge($searchItemsId, $searchItemsName);
-
-if (!empty($searchItems)) {
-    echo "<table border='1'>";
-    foreach ($searchItems as $item) {
+	if (!empty($searchItems)) {
+    	echo "<table border='1'>";
+    	foreach ($searchItems as $item) {
         
-        $myfile = fopen("StudentData.txt", "r") or die("Unable to open file!");
-        $found = false;
-        while (!feof($myfile)) {
-            $line = fgets($myfile);
-            $data = explode("|", $line);
-            if ($data[0] == $item || $data[1] == $item) {
-                $found = true;
-                echo "<tr>
-                <td>$data[0]</td>
-                <td>$data[1]</td>
-                <td>$data[2]</td>
-                <td>$data[3]</td>
-                </tr>";
-                break;
-            }
-        }
-        fclose($myfile);
-        if (!$found) {
-            echo "<tr><td colspan='4'>Not Found for: $item</td></tr>";
-        }
+        	$myfile = fopen("StudentData.txt", "r") or die("Unable to open file!");
+        	$found = false;
+        	while (!feof($myfile)) {
+            	$line = fgets($myfile);
+            	$data = explode("|", $line);
+            	if ($data[0] == $item || $data[1] == $item) {
+                	$found = true;
+                	echo "<tr>
+                			<td>$data[0]</td>
+                			<td>$data[1]</td>
+                			<td>$data[2]</td>
+                			<td>$data[3]</td>
+                		</tr>";
+                	break;
+            	}
+        	}
+        	fclose($myfile);
+        	if (!$found) {
+            	echo "<tr><td colspan='4'>Not Found for: $item</td></tr>";
+        	}
         
-    }
-    echo "</table>";
-}
-
-
-//   $search = $_GET['Id'] ?? $_GET['Name'] ?? null;
-//     if ($search) {
-//         $searchItems = explode(",", $search); // Tách chuỗi search thành mảng
-//         foreach ($searchItems as $item) {
-//             echo "<p>Search result for: $item</p>";
-//             $myfile = fopen("StudentData.txt", "r") or die("Unable to open file!");
-//             $found = false;
-//             while (!feof($myfile)) {
-//                 $line = fgets($myfile);
-//                 $data = explode("|", $line);
-//                 if ($data[0] == $item || $data[1] == $item) {
-//                     $found = true;
-//                     echo "<tr>
-//                     <td>$data[0]</td>
-//                     <td>$data[1]</td>
-//                     <td>$data[2]</td>
-//                     <td>$data[3]</td>
-//                     </tr>";
-//                     break;
-//                 }
-//             }
-//             fclose($myfile);
-//             if (!$found) {
-//                 echo "<tr><td colspan='4'>Not Found for: $item</td></tr>";
-//             }
-//         }
-//     }
+    	}
+    	echo "</table>";
+	}
   ?>
 </table>
 
